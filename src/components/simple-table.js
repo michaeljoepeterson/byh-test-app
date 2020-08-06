@@ -18,32 +18,42 @@ export default class ExampleTable extends React.Component{
     }
 
     componentDidMount(){
+        this.getResults();
+    }
 
+    async getResults(){
+        try{
+            let responses = await getResponses();
+            this.setState({
+                responses
+            });
+        }
+        catch(err){
+            console.log('error',err);
+        }
+        
     }
 
     buildTable = () =>{
 
         let rows = [];
-        for(let i = 0;i < this.props.lessons.length;i++){
-            let lesson = this.props.lessons[i];
-            let studentString = '';
-            for(let k = 0;k < lesson.students.length;k++){
-                let student = lesson.students[k];
-                studentString += student.firstName + ' ' + student.lastName;
-                if(k !== lesson.students.length - 1){
-                    studentString += ',';
-                } 
-            }
-            let date = new Date(lesson.date);
+        for(let i = 0;i < this.state.responses.length;i++){
+            let response = this.state.responses[i];
+
+            let date = new Date(response["Due date"]);
             rows.push(
                 <TableRow key={i}>
-                    <TableCell component="th" scope="row">
+                    <TableCell align="right">{response.id}</TableCell>
+                    <TableCell align="right">{response.Name}</TableCell>
+                    <TableCell align="right">{response.Email}</TableCell>
+                    <TableCell align="right">{response.Summary}</TableCell>
+                    <TableCell align="right">{response['Location of problem']}</TableCell>
+                    <TableCell align="right">{response.Type}</TableCell>
+                    <TableCell align="right">{response.Priority}</TableCell>
+                    <TableCell align="right" component="th" scope="row">
                         {date.toDateString() + ' : ' + date.toLocaleTimeString()}
                     </TableCell>
-                    <TableCell align="right">{lesson.lessonType}</TableCell>
-                    <TableCell align="right">{lesson.notes}</TableCell>
-                    <TableCell align="right">{studentString}</TableCell>
-                    <TableCell align="right">{lesson.teacher.email}</TableCell>
+                    <TableCell align="right">{response['More Details']}</TableCell>
                 </TableRow>
             )
         }
@@ -52,11 +62,15 @@ export default class ExampleTable extends React.Component{
             <Table  aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell align="right">Lesson Type</TableCell>
-                    <TableCell align="right">Notes</TableCell>
-                    <TableCell align="right">Students</TableCell>
-                    <TableCell align="right">Teacher</TableCell>
+                    <TableCell align="right">id</TableCell>
+                    <TableCell align="right">Name</TableCell>
+                    <TableCell align="right">Email</TableCell>
+                    <TableCell align="right">Summary</TableCell>
+                    <TableCell align="right">Location of Problem</TableCell>
+                    <TableCell align="right">Type</TableCell>
+                    <TableCell align="right">Priority</TableCell>
+                    <TableCell align="right">Due Date</TableCell>
+                    <TableCell align="right">More Details</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -74,7 +88,6 @@ export default class ExampleTable extends React.Component{
         return(
             <div>
                 {table}
-                <p>test</p>
             </div>
         );
     }
