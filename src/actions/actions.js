@@ -7,7 +7,10 @@ export async function getResponses(){
         let url = `${API_BASE_URL}/test?secret=${buf}`;
         let responses = await fetch(url);
         let jsonRes = await responses.json();
-        console.log(jsonRes);
+        jsonRes.results = jsonRes.results.map(resp => {
+            resp.hide = false;
+            return resp;
+        });
         return jsonRes.results;
     }
     catch(err){
