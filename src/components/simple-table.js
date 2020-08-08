@@ -14,6 +14,8 @@ export default class ExampleTable extends React.Component{
     constructor(props) {
         super(props);
         this.email = 'Email';
+        this.priority = 'Priority';
+        this.summary = 'Summary'
         this.state = {
             responses:null,
             filters:{}
@@ -39,15 +41,24 @@ export default class ExampleTable extends React.Component{
 
     checkFilters = (newVal) =>{
         let responses = [...this.state.responses];
+        let hiddenResp = {};
         for(let i = 0;i < responses.length;i++){
             let response = responses[i];
-            for(let filter in this.state.filters){
-                if(response[filter] !== this.state.filters[filter] && newVal){
-                    response.hide = true;
+            let keys = Object.keys(this.state.filters);
+            if(keys.length > 0){
+                for(let filter in this.state.filters){
+                    if(response[filter] !== this.state.filters[filter]){
+                        response.hide = true;
+                        hiddenResp[response.id] = true;
+                    }
+                    else{
+                        response.hide = false;
+                        break;
+                    }
                 }
-                else{
-                    response.hide = false;
-                }
+            }
+            else{
+                response.hide = false;
             }
         }
 
@@ -105,10 +116,23 @@ export default class ExampleTable extends React.Component{
         );
     }
 
+    removeNullFilters = (filters) => {
+        let newFilter = {};
+
+        for(let key in filters){
+            if(filters[key] || filters[key] === 0){
+                newFilter[key] = filters[key];
+            }
+        }
+
+        return newFilter;
+    }
+
     handleFilterChanged = (newVal,title) => {
         console.log(newVal,title);
         let filters = JSON.parse(JSON.stringify(this.state.filters));
         filters[title] = newVal ? newVal[title] : null;
+        filters = this.removeNullFilters(filters);
         this.setState({
             filters
         },() => {
@@ -121,10 +145,14 @@ export default class ExampleTable extends React.Component{
         console.log('example table:',this.state);
 
         const table = this.state.responses && this.state.responses.length > 0? this.buildTable() : []; 
-        const emailFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>) : null
+        const emailFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>) : null;
+        const priorityFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.priority} filterChanged={this.handleFilterChanged}/>) : null;
+        const summaryFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.summary} filterChanged={this.handleFilterChanged}/>) : null;
         return(
             <div>
                 {emailFilter}
+                {priorityFilter}
+                {summaryFilter}
                 {table}
             </div>
         );

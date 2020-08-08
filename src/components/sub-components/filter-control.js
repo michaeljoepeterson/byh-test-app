@@ -21,9 +21,9 @@ export default function FilterControl(props){
     
     const buildFilter = () => {
         let copiedResponses = props.responses.filter(resp => {
-            if(!resp.hide){
+            //if(!resp.hide){
                 return resp;
-            }
+            //}
         });
         let filteredResponses = removeCopies(copiedResponses);
         const filter = (
