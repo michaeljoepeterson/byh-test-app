@@ -43,7 +43,7 @@ export default function FilterControl(props){
     const filter = buildFilter();
 
     return(
-        <div>
+        <div className="filter-container">
             {filter}
         </div>
     );

@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import FilterControl from './sub-components/filter-control';
+import Grid from '@material-ui/core/Grid';
 
 
 export default class ExampleTable extends React.Component{
@@ -15,7 +16,10 @@ export default class ExampleTable extends React.Component{
         super(props);
         this.email = 'Email';
         this.priority = 'Priority';
-        this.summary = 'Summary'
+        this.summary = 'Summary';
+        document.addEventListener('keydown', this.keyDown);
+        document.addEventListener('keyup', this.KeyUp);
+        this.ctrlDown = false;
         this.state = {
             responses:null,
             filters:{}
@@ -37,6 +41,55 @@ export default class ExampleTable extends React.Component{
             console.log('error',err);
         }
         
+    }
+
+    keyDown = (event) =>{
+        console.log(event);
+        if(event.key === 'Control'){
+            this.ctrlDown = true;
+        }
+        if(event.key === 'Escape'){
+            this.resetSelected();
+        }
+    }
+
+    KeyUp = (event) =>{;
+        console.log('ctrl let go')
+        if(event.key === 'Control'){
+            this.ctrlDown = false;
+        }
+    }
+    resetSelected = () => {
+        //debugger;
+        console.log('reset',this.state);
+        if(this.state.responses){
+            let responses = this.state.responses.map(resp => {
+                resp.selected = false;
+                return resp;
+            });
+    
+            this.setState({
+                responses
+            });
+        }
+        
+    }
+
+    selectRow = (id) => {
+        let responses = [...this.state.responses];
+        for(let i = 0;i < responses.length;i ++){
+            let response = responses[i];
+            if(response.id === id){
+                response.selected = response.selected ? false : true;
+            }
+            else if(response.id !== id && !this.ctrlDown){
+                response.selected = false;
+            }
+        }
+
+        this.setState({
+            responses
+        });
     }
 
     checkFilters = (newVal) =>{
@@ -76,7 +129,7 @@ export default class ExampleTable extends React.Component{
             if(!response.hide){
                 let date = new Date(response["Due date"]);
                 rows.push(
-                    <TableRow key={i}>
+                    <TableRow className={response.selected ? 'selected' : ''} key={i} onClick={(e) => this.selectRow(response.id)}>
                         <TableCell align="right">{response.id}</TableCell>
                         <TableCell align="right">{response.Name}</TableCell>
                         <TableCell align="right">{response.Email}</TableCell>
@@ -150,9 +203,17 @@ export default class ExampleTable extends React.Component{
         const summaryFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.summary} filterChanged={this.handleFilterChanged}/>) : null;
         return(
             <div>
-                {emailFilter}
-                {priorityFilter}
-                {summaryFilter}
+                <Grid container>
+                    <Grid item md={4} xs={12}>
+                        {emailFilter}
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        {priorityFilter}
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        {summaryFilter}
+                    </Grid>
+                </Grid>
                 {table}
             </div>
         );
