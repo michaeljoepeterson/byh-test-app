@@ -37,13 +37,29 @@ export default class ExampleTable extends React.Component{
         
     }
 
-    checkFilters = (response) =>{
+    checkFilters = (newVal) =>{
+        let responses = [...this.state.responses];
+        for(let i = 0;i < responses.length;i++){
+            let response = responses[i];
+            for(let filter in this.state.filters){
+                if(response[filter] !== this.state.filters[filter] && newVal){
+                    response.hide = true;
+                }
+                else{
+                    response.hide = false;
+                }
+            }
+        }
 
+        this.setState({
+            responses
+        });
     }
 
     buildTable = () =>{
 
         let rows = [];
+        
         for(let i = 0;i < this.state.responses.length;i++){
             let response = this.state.responses[i];
             if(!response.hide){
@@ -95,12 +111,15 @@ export default class ExampleTable extends React.Component{
         filters[title] = newVal ? newVal[title] : null;
         this.setState({
             filters
+        },() => {
+            this.checkFilters(newVal);
         });
     }
 
     render(){
         //console.log(this.state);
         console.log('example table:',this.state);
+
         const table = this.state.responses && this.state.responses.length > 0? this.buildTable() : []; 
         const emailFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>) : null
         return(

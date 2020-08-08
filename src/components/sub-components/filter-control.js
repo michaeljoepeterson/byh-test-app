@@ -20,7 +20,7 @@ export default function FilterControl(props){
     }
     
     const buildFilter = () => {
-        let copiedResponses = props.responses.map(resp => {
+        let copiedResponses = props.responses.filter(resp => {
             if(!resp.hide){
                 return resp;
             }
