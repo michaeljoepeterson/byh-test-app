@@ -1,6 +1,7 @@
 import React from 'react';
 import {getEmployees} from '../actions/actions';
 import AssignCard from './sub-components/assign-card';
+import Button from '@material-ui/core/Button';
 
 export default class AssignWork extends React.Component{
     constructor(props) {
@@ -37,14 +38,21 @@ export default class AssignWork extends React.Component{
         return cards
     }
 
+    saveAssignees = () => {
+
+    }
+
     render(){
         //console.log(empl)
         const cards = this.props.selectedWork && this.props.selectedWork.length > 0 && this.state.employees  ?  this.buildCards() : null;
 
         return(
             <div className="work-container">
-                <p>Assign Work</p>
+                <h2>Assign Work</h2>
                 {cards}
+                <div>
+                <Button onClick={(e) => this.saveAssignees(e)} variant="contained">Save</Button>
+                </div>
             </div>
         );
     }

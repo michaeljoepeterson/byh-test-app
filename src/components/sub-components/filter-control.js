@@ -26,17 +26,29 @@ export default function FilterControl(props){
             //}
         });
         let filteredResponses = removeCopies(copiedResponses);
-        const filter = (
+        const filter = !props.value ?(
             <Autocomplete
                 id="combo-box-demo"
                 onChange={(e,newValue) => filterChanged(e,newValue) }
                 options={filteredResponses}
                 getOptionLabel={(option) => option[props.target] ? option[props.target] : ''}
                 style={{ maxWidth: 300 }}
-                renderInput={(params) => <TextField {...params} label={props.title ? props.title : props.target} variant="outlined" style = {{width: '100%'}}/>}
+                renderInput={(params) => <TextField {...params} label={props.title ? props.title : props.target} variant="outlined" style = {{width: '100%'}}
+                />}
+                />
+        ) :(
+            <Autocomplete
+                id="combo-box-demo"
+                onChange={(e,newValue) => filterChanged(e,newValue) }
+                options={filteredResponses}
+                getOptionLabel={(option) => option[props.target] ? option[props.target] : ''}
+                style={{ maxWidth: 300 }}
+                value={ props.value? props.value : ''}
+                renderInput={(params) => <TextField {...params} label={props.title ? props.title : props.target} variant="outlined" style = {{width: '100%'}}
+                />}
                 />
         );
-
+        console.log(props.value);
         return filter
     }
 
