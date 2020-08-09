@@ -22,7 +22,6 @@ export default function SimpleModal(props){
             </Paper>
         </div>
     );
-    console.log(props.children);
 
     return(
         <Modal

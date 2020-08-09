@@ -211,6 +211,10 @@ export default class ExampleTable extends React.Component{
         return false;
     }
 
+    findSelected = () => {
+        return this.state.responses.filter(response => response.selected);
+    }
+
     openAssigneeModal = () => {
         console.log('open modal');
         this.setState({
@@ -230,12 +234,19 @@ export default class ExampleTable extends React.Component{
         console.log('example table:',this.state);
 
         const table = this.state.responses && this.state.responses.length > 0? this.buildTable() : []; 
-        const emailFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>) : null;
-        const priorityFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.priority} filterChanged={this.handleFilterChanged}/>) : null;
-        const summaryFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.summary} filterChanged={this.handleFilterChanged}/>) : null;
-        const assignButton = this.checkSelected() ? (
-        <Button onClick={(e) => this.openAssigneeModal(e)} variant="contained">Assign Work</Button>
+        const emailFilter = this.state.responses && this.state.responses.length > 0 ? (
+            <FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>
         ) : null;
+        const priorityFilter = this.state.responses && this.state.responses.length > 0 ? (
+            <FilterControl responses={this.state.responses} target={this.priority} filterChanged={this.handleFilterChanged}/>
+            ) : null;
+        const summaryFilter = this.state.responses && this.state.responses.length > 0 ? (<
+            FilterControl responses={this.state.responses} target={this.summary} filterChanged={this.handleFilterChanged}/>
+            ) : null;
+        const assignButton = this.checkSelected() ? (
+            <Button onClick={(e) => this.openAssigneeModal(e)} variant="contained">Assign Work</Button>
+            ) : null;
+        const selectedResponses = this.state.responses && this.state.responses.length > 0 ? this.findSelected() : [];
 
         return(
             <div>
@@ -255,7 +266,7 @@ export default class ExampleTable extends React.Component{
                     {assignButton}
                 </div>
                 <SimpleModal open={this.state.assigneeModal} handleClose={this.modalClosed}>
-                    <AssignWork testProp="test prop here"/>
+                    <AssignWork selectedWork={selectedResponses} testProp="test prop here"/>
                 </SimpleModal>
             </div>
         );
