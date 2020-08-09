@@ -11,6 +11,7 @@ import FilterControl from './sub-components/filter-control';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SimpleModal from './sub-components/simple-modal';
+import AssignWork from './assign-work';
 import './styles/main-styles.css';
 
 
@@ -253,7 +254,9 @@ export default class ExampleTable extends React.Component{
                 <div className="assign-container">
                     {assignButton}
                 </div>
-                <SimpleModal open={this.state.assigneeModal} handleClose={this.modalClosed}/>
+                <SimpleModal open={this.state.assigneeModal} handleClose={this.modalClosed}>
+                    <AssignWork testProp="test prop here"/>
+                </SimpleModal>
             </div>
         );
     }

@@ -22,7 +22,8 @@ export default function SimpleModal(props){
             </Paper>
         </div>
     );
-    
+    console.log(props.children);
+
     return(
         <Modal
         open={props.open}
@@ -36,7 +37,14 @@ export default function SimpleModal(props){
         }}
       >
         <Fade in={props.open}>
-          {body}
+            <div style={props.modalStyle} className="modal-container">
+                <Paper className="paper-container">
+                    {props.children}
+                    <div>
+                        <Button onClick={(e) => closeModal(e)} variant="contained">{props.cancel ? props.cancel : 'Cancel'}</Button>
+                    </div>
+                </Paper>
+            </div>
         </Fade>
       </Modal>
     )
