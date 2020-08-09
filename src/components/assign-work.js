@@ -30,7 +30,7 @@ export default class AssignWork extends React.Component{
     buildCards = () => {
         let cards = this.props.selectedWork.map(work => {
             return (
-                <AssignCard workRequest={work} employees={this.state.employees}/>
+                <AssignCard key={work.id} workRequest={work} employees={this.state.employees}/>
             )
         });
 
@@ -42,7 +42,7 @@ export default class AssignWork extends React.Component{
         const cards = this.props.selectedWork && this.props.selectedWork.length > 0 && this.state.employees  ?  this.buildCards() : null;
 
         return(
-            <div>
+            <div className="work-container">
                 <p>Assign Work</p>
                 {cards}
             </div>

@@ -39,7 +39,7 @@ export default function SimpleModal(props){
             <div style={props.modalStyle} className="modal-container">
                 <Paper className="paper-container">
                     {props.children}
-                    <div>
+                    <div className="modal-cancel">
                         <Button onClick={(e) => closeModal(e)} variant="contained">{props.cancel ? props.cancel : 'Cancel'}</Button>
                     </div>
                 </Paper>

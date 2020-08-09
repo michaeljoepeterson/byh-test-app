@@ -2,19 +2,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height:80vh;
+    height: 100%;
 }
 
 .paper-container{
     height: 80%;
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 1em;
+    padding: 1em; */
     width:70%;
+    overflow: auto;
 }
 
 .paper-container > div > button{
     margin: 1em;
+}
+
+.modal-cancel{
+    text-align: center;
 }

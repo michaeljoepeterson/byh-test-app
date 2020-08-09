@@ -32,8 +32,8 @@ export default function FilterControl(props){
                 onChange={(e,newValue) => filterChanged(e,newValue) }
                 options={filteredResponses}
                 getOptionLabel={(option) => option[props.target] ? option[props.target] : ''}
-                style={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label={props.title ? props.title : props.target} variant="outlined" />}
+                style={{ maxWidth: 300 }}
+                renderInput={(params) => <TextField {...params} label={props.title ? props.title : props.target} variant="outlined" style = {{width: '100%'}}/>}
                 />
         );
 
