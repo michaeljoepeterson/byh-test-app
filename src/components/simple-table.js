@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import FilterControl from './sub-components/filter-control';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import SimpleModal from './sub-components/simple-modal';
+import './styles/main-styles.css';
 
 
 export default class ExampleTable extends React.Component{
@@ -22,7 +25,8 @@ export default class ExampleTable extends React.Component{
         this.ctrlDown = false;
         this.state = {
             responses:null,
-            filters:{}
+            filters:{},
+            assigneeModal:false
         };
     }
 
@@ -193,6 +197,33 @@ export default class ExampleTable extends React.Component{
         });
     }
 
+    checkSelected = () => {
+        if(this.state.responses && this.state.responses.length > 0){
+            for(let i = 0;i < this.state.responses.length;i++){
+                let response = this.state.responses[i];
+                if(response.selected){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    openAssigneeModal = () => {
+        console.log('open modal');
+        this.setState({
+            assigneeModal:true
+        });
+    }
+
+
+    modalClosed = () => {
+        this.setState({
+            assigneeModal:false
+        });
+    }
+
     render(){
         //console.log(this.state);
         console.log('example table:',this.state);
@@ -201,6 +232,10 @@ export default class ExampleTable extends React.Component{
         const emailFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.email} filterChanged={this.handleFilterChanged}/>) : null;
         const priorityFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.priority} filterChanged={this.handleFilterChanged}/>) : null;
         const summaryFilter = this.state.responses && this.state.responses.length > 0 ? (<FilterControl responses={this.state.responses} target={this.summary} filterChanged={this.handleFilterChanged}/>) : null;
+        const assignButton = this.checkSelected() ? (
+        <Button onClick={(e) => this.openAssigneeModal(e)} variant="contained">Assign Work</Button>
+        ) : null;
+
         return(
             <div>
                 <Grid container>
@@ -215,6 +250,10 @@ export default class ExampleTable extends React.Component{
                     </Grid>
                 </Grid>
                 {table}
+                <div className="assign-container">
+                    {assignButton}
+                </div>
+                <SimpleModal open={this.state.assigneeModal} handleClose={this.modalClosed}/>
             </div>
         );
     }

@@ -17,3 +17,16 @@ export async function getResponses(){
         throw(err);
     }
 }
+
+export async function getEmployees(){
+    try{
+        let  buf = btoa(GET_S); 
+        let url = `${API_BASE_URL}/employees?secret=${buf}`;
+        let responses = await fetch(url);
+        let jsonRes = await responses.json();
+        return jsonRes.results;
+    }
+    catch(err){
+        throw(err);
+    }
+}
