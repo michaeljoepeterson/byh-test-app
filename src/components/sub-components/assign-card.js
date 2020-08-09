@@ -30,8 +30,8 @@ export default class AssignCard extends React.Component{
         })
     }
     //need to set selected employee state
-    handleFilterChanged = (newVal,title) => {
-        console.log(newVal,title);
+    handleFilterChanged = (newVal,title,index) => {
+        console.log(newVal,title,index);
     }
 
     getDueDate = (dateTime) => {
@@ -45,7 +45,7 @@ export default class AssignCard extends React.Component{
         for(let i = 0;i < this.state.employeeCount;i++){
             let filter = (
                 <Grid item md={3} xs={12} key={i}>
-                    <FilterControl responses={this.props.employees} title={this.filterTitle} target={this.filterTarget} filterChanged={this.handleFilterChanged} value={this.state.selectedEmployees[i]}/>
+                    <FilterControl responses={this.props.employees} title={this.filterTitle} target={this.filterTarget} filterChanged={this.handleFilterChanged} value={this.state.selectedEmployees[i]} changeData={i}/>
                     <IconButton onClick={(e) => this.removeEmployee(i)} aria-label="remove student">
                         <CancelOutlinedIcon/>
                     </IconButton>

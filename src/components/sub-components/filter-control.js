@@ -16,7 +16,7 @@ export default function FilterControl(props){
     }
 
     const filterChanged = (event,newValue) =>{
-        props.filterChanged(newValue,props.target);
+        props.filterChanged(newValue,props.target,props.changeData);
     }
     
     const buildFilter = () => {
