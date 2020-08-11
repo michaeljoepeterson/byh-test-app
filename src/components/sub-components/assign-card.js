@@ -28,6 +28,8 @@ export default class AssignCard extends React.Component{
             let employees = [this.props.employees[0]];
             this.setState({
                 selectedEmployees:employees
+            },() => {
+                this.props.updateEmployees(this.props.workRequest.id,employees);
             });
         }
         else{
@@ -41,7 +43,14 @@ export default class AssignCard extends React.Component{
     }
     //need to set selected employee state
     handleFilterChanged = (newVal,title,index) => {
+        let selectedEmployees = [...this.state.selectedEmployees];
+        selectedEmployees[index] = newVal
         console.log(newVal,title,index);
+        this.setState({
+            selectedEmployees
+        },() => {
+            this.props.updateEmployees(this.props.workRequest.id,selectedEmployees);
+        });
     }
 
     getDueDate = (dateTime) => {
@@ -76,6 +85,8 @@ export default class AssignCard extends React.Component{
         this.setState({
             employeeCount:count,
             selectedEmployees
+        },() => {
+            this.props.updateEmployees(this.props.workRequest.id,selectedEmployees);
         });
     }
     //need to remove correct employee
@@ -85,6 +96,8 @@ export default class AssignCard extends React.Component{
         this.setState({
             employeeCount:count,
             selectedEmployees
+        },() => {
+            this.props.updateEmployees(this.props.workRequest.id,selectedEmployees);
         });
     }
 

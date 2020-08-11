@@ -1,5 +1,5 @@
 import React from 'react';
-import {getEmployees} from '../actions/actions';
+import {getEmployees,updateAssignees} from '../actions/actions';
 import AssignCard from './sub-components/assign-card';
 import Button from '@material-ui/core/Button';
 
@@ -7,11 +7,13 @@ export default class AssignWork extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            employees:null
+            employees:null,
+            employeeData:null
         };
     }
 
     componentDidMount(){
+        this.buildWorkData();
         this.getResults();
     }
 
@@ -28,22 +30,65 @@ export default class AssignWork extends React.Component{
         
     }
 
+    buildWorkData = () =>{
+        let employeeData = {};
+
+        for(let i = 0;i < this.props.selectedWork.length;i++){
+            let work = this.props.selectedWork[i];
+            employeeData[work.id] = work.assignees;
+        }
+
+        this.setState({
+            employeeData
+        });
+    }
+
     buildCards = () => {
         let cards = this.props.selectedWork.map(work => {
             return (
-                <AssignCard key={work.id} workRequest={work} employees={this.state.employees} selectedEmployees={work.assignees}/>
+                <AssignCard key={work.id} workRequest={work} employees={this.state.employees} selectedEmployees={work.assignees} updateEmployees={this.updateAssignees}/>
             )
         });
 
         return cards
     }
-
-    saveAssignees = () => {
+    /*
+    changeEmployees = (id,employees) => {
 
     }
 
+    addAssignee = (id,employees) => {
+
+    }
+
+    removeAssignee = (id,employees) =>{
+
+    }
+    */
+    updateAssignees = (id,employees) =>{
+        let newEmployees = [...employees];
+        let employeeData = {...this.state.employeeData};
+        employeeData[id] = newEmployees;
+        this.setState({
+            employeeData
+        });
+    }
+
+    async saveAssignees() {
+        try{
+            console.log('Save Data ==================',this.state.employeeData);
+            let response = await updateAssignees(this.state.employeeData);
+            console.log('responses after update=================',response);
+            this.props.assigneeUpdate();
+        }
+        catch(err){
+            console.log('error saving', err);
+        }
+        
+    }
+
     render(){
-        //console.log(empl)
+        console.log(this.state.employeeData);
         const cards = this.props.selectedWork && this.props.selectedWork.length > 0 && this.state.employees  ?  this.buildCards() : null;
 
         return(

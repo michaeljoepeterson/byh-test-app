@@ -28,7 +28,6 @@ export default function FilterControl(props){
         let filteredResponses = removeCopies(copiedResponses);
         const filter = !props.value ?(
             <Autocomplete
-                id="combo-box-demo"
                 onChange={(e,newValue) => filterChanged(e,newValue) }
                 options={filteredResponses}
                 getOptionLabel={(option) => option[props.target] ? option[props.target] : ''}
@@ -38,7 +37,6 @@ export default function FilterControl(props){
                 />
         ) :(
             <Autocomplete
-                id="combo-box-demo"
                 onChange={(e,newValue) => filterChanged(e,newValue) }
                 options={filteredResponses}
                 getOptionLabel={(option) => option[props.target] ? option[props.target] : ''}

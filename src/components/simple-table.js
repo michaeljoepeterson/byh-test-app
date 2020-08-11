@@ -39,7 +39,8 @@ export default class ExampleTable extends React.Component{
         try{
             let responses = await getResponses();
             this.setState({
-                responses
+                responses,
+                assigneeModal:false
             });
         }
         catch(err){
@@ -147,7 +148,7 @@ export default class ExampleTable extends React.Component{
                 let date = new Date(response["Due date"]);
                 let assignees = response.assignees && response.assignees.length > 0 ? this.buildAssigneeString(response.assignees) : (<span>No Assignee</span>);
                 rows.push(
-                    <TableRow className={response.selected ? 'selected' : ''} key={i} onClick={(e) => this.selectRow(response.id)}>
+                    <TableRow className={response.selected ? 'clickable selected' : 'clickable'} key={i} onClick={(e) => this.selectRow(response.id)}>
                         <TableCell align="right">{response.id}</TableCell>
                         <TableCell align="right">{response.Name}</TableCell>
                         <TableCell align="right">{response.Email}</TableCell>
@@ -244,6 +245,10 @@ export default class ExampleTable extends React.Component{
         });
     }
 
+    assigneesUpdated = () => {
+        this.getResults();
+    }
+
     render(){
         //console.log(this.state);
         console.log('example table:',this.state);
@@ -281,7 +286,7 @@ export default class ExampleTable extends React.Component{
                     {assignButton}
                 </div>
                 <SimpleModal open={this.state.assigneeModal} handleClose={this.modalClosed}>
-                    <AssignWork selectedWork={selectedResponses} testProp="test prop here"/>
+                    <AssignWork selectedWork={selectedResponses} testProp="test prop here" assigneeUpdate={this.assigneesUpdated}/>
                 </SimpleModal>
             </div>
         );
