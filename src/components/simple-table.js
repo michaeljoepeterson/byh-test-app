@@ -125,6 +125,18 @@ export default class ExampleTable extends React.Component{
         });
     }
 
+    buildAssigneeString = (assignees) => {
+        let string = '';
+
+        for(let i = 0;i < assignees.length;i++){
+            string += assignees[i].name + ',';
+        }
+
+        string = string.slice(0,string.length - 1);      
+
+        return string;
+    }
+
     buildTable = () =>{
 
         let rows = [];
@@ -133,6 +145,7 @@ export default class ExampleTable extends React.Component{
             let response = this.state.responses[i];
             if(!response.hide){
                 let date = new Date(response["Due date"]);
+                let assignees = response.assignees && response.assignees.length > 0 ? this.buildAssigneeString(response.assignees) : (<span>No Assignee</span>);
                 rows.push(
                     <TableRow className={response.selected ? 'selected' : ''} key={i} onClick={(e) => this.selectRow(response.id)}>
                         <TableCell align="right">{response.id}</TableCell>
@@ -146,6 +159,7 @@ export default class ExampleTable extends React.Component{
                             {date.toDateString() + ' : ' + date.toLocaleTimeString()}
                         </TableCell>
                         <TableCell align="right">{response['More Details']}</TableCell>
+                        <TableCell align="right">{assignees}</TableCell>
                     </TableRow>
                 )
             }        
@@ -164,6 +178,7 @@ export default class ExampleTable extends React.Component{
                     <TableCell align="right">Priority</TableCell>
                     <TableCell align="right">Due Date</TableCell>
                     <TableCell align="right">More Details</TableCell>
+                    <TableCell align="right">Assignees</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
