@@ -24,10 +24,20 @@ export default class AssignCard extends React.Component{
     }
 
     componentDidMount(){
-        let employees = [this.props.employees[0]];
-        this.setState({
-            selectedEmployees:employees
-        })
+        if(!this.props.selectedEmployees || this.props.selectedEmployees.length === 0){
+            let employees = [this.props.employees[0]];
+            this.setState({
+                selectedEmployees:employees
+            });
+        }
+        else{
+            let employeeCount = this.props.selectedEmployees.length
+            this.setState({
+                selectedEmployees:this.props.selectedEmployees,
+                employeeCount
+            }); 
+        }
+        
     }
     //need to set selected employee state
     handleFilterChanged = (newVal,title,index) => {
@@ -69,10 +79,12 @@ export default class AssignCard extends React.Component{
         });
     }
     //need to remove correct employee
-    removeEmployee = () => {
-        let count = this.state.employeeCount + 1;
+    removeEmployee = (index) => {
+        let count = this.state.employeeCount - 1 === 0 ? 0 : this.state.employeeCount - 1;
+        let selectedEmployees = this.state.selectedEmployees.filter((employee,i) => i !== index); 
         this.setState({
-            employeeCount:count
+            employeeCount:count,
+            selectedEmployees
         });
     }
 

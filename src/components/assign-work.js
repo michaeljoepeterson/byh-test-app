@@ -31,7 +31,7 @@ export default class AssignWork extends React.Component{
     buildCards = () => {
         let cards = this.props.selectedWork.map(work => {
             return (
-                <AssignCard key={work.id} workRequest={work} employees={this.state.employees}/>
+                <AssignCard key={work.id} workRequest={work} employees={this.state.employees} selectedEmployees={work.assignees}/>
             )
         });
 
