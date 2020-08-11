@@ -41,6 +41,8 @@ export default class ExampleTable extends React.Component{
             this.setState({
                 responses,
                 assigneeModal:false
+            },() => {
+                this.checkFilters();
             });
         }
         catch(err){
